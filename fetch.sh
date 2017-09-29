@@ -20,7 +20,7 @@ while [ "x${DICT_IDS[i]}" != "x" ]; do
   python ./scel2txt.py out/scel/$id.scel
   txt=$(cat out/scel/$id.txt)
   header="---\nname: ${DICT_PREFIX}.${shortname}\nversion: \"${date}\"\nsort: original\nuse_preset_vocabulary: true\n...\n\n"
-  echo -e "$header${txt}" > out/rime/${DICT_PREFIX}.${shortname}.yaml
+  echo -e "$header${txt}" > out/rime/${DICT_PREFIX}.${shortname}.dict.yaml
   i=$(( $i + 1 ))
 done
 
