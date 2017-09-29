@@ -12,4 +12,6 @@ DICT_SHORTS=(
   "anime"
 )
 DICT_PREFIX="double_pinyin_flypy"
+DICT_MASTER_NAME="awesome"
 #COPY="$HOME/.config/ibus/rime"
+#HOOK_AFTER="rime_deployer --build $COPY /usr/share/rime-data"
