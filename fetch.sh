@@ -23,3 +23,7 @@ while [ "x${DICT_IDS[i]}" != "x" ]; do
   echo -e "$header${txt}" > out/rime/${DICT_PREFIX}.${shortname}.yaml
   i=$(( $i + 1 ))
 done
+
+if [[ ! -z "$COPY" ]]; then
+  cp out/rime/* "$COPY"
+fi

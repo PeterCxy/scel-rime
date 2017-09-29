@@ -12,3 +12,4 @@ DICT_SHORTS=(
   "anime"
 )
 DICT_PREFIX="double_pinyin_flypy"
+#COPY="$HOME/.config/ibus/rime"

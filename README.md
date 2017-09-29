@@ -15,4 +15,4 @@ This project is for Chinese IME, thus this document is written in Chinese.
 
 还有一个配置项，`DICT_PREFIX`，将其改为你主要使用的输入法名称即可。不修改也没有太大的问题 —— 这仅仅用作文件名的一部分而已。
 
-完成以后运行 `fetch.sh`，脚本退出以后，生成的词库文件就在 `out/rime` 里面了。
+完成以后运行 `fetch.sh`，脚本退出以后，生成的词库文件就在 `out/rime` 里面了。你也可以设置 `COPY` 配置项来让脚本执行完成之后自动部署字典文件到 `RIME` 目录下。
