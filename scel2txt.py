@@ -1,6 +1,7 @@
 # -*- encoding:utf-8 -*-
 # From https://github.com/xwzhong/small-program/blob/master/scel-to-txt/scel2txt.py
 # Author xwzhong
+# Ported to Python3 by PeterCxy
 
 import binascii
 import struct
@@ -48,8 +49,8 @@ class Scel2Txt(object):
         length = len(data)
         ret = u''
         while i < length:
-            x = data[i] + data[i+1]
-            t = unichr(struct.unpack('H',x)[0])
+            x = data[i:i+2]
+            t = chr(struct.unpack('H',x)[0])
             if t == u'\r':
                 ret += u'\n'
             elif t != u' ':
@@ -59,16 +60,16 @@ class Scel2Txt(object):
 
     def getPyTable(self, data):
         #获取拼音表
-        if data[0:4] != "\x9D\x01\x00\x00":
+        if data[0:4] != b"\x9D\x01\x00\x00":
             return None
         data = data[4:]
         pos = 0
         length = len(data)
         while pos < length:
-            index = struct.unpack('H',data[pos]+data[pos+1])[0]
-            #print index,
+            index = struct.unpack('H',data[pos:pos+2])[0]
+            #print(index)
             pos += 2
-            l = struct.unpack('H',data[pos]+data[pos+1])[0]
+            l = struct.unpack('H',data[pos:pos+2])[0]
             #print l,
             pos += 2
             py = self.byte2str(data[pos:pos+l])
@@ -82,7 +83,7 @@ class Scel2Txt(object):
         length = len(data)
         ret = u''
         while pos < length:
-            index = struct.unpack('H',data[pos]+data[pos+1])[0]
+            index = struct.unpack('H',data[pos:pos+2])[0]
             ret += self.GPy_Table[index] + u' '
             pos += 2
         return ret.strip()
@@ -95,7 +96,7 @@ class Scel2Txt(object):
         ret = u''
         while pos < length:
 
-            index = struct.unpack('H',data[pos]+data[pos+1])[0]
+            index = struct.unpack('H',data[pos:pos+2])[0]
             ret += GPy_Table[index]
             pos += 2
         return ret
@@ -108,30 +109,30 @@ class Scel2Txt(object):
         length = len(data)
         while pos < length:
             #同音词数量
-            same = struct.unpack('H',data[pos]+data[pos+1])[0]
-            #print '[same]:',same,
+            same = struct.unpack('H',data[pos:pos+2])[0]
+            #print('[same]:',same)
 
             #拼音索引表长度
             pos += 2
-            py_table_len = struct.unpack('H',data[pos]+data[pos+1])[0]
+            py_table_len = struct.unpack('H',data[pos:pos+2])[0]
             #拼音索引表
             pos += 2
             py = self.getWordPy(data[pos: pos+py_table_len])
 
             #中文词组
             pos += py_table_len
-            for i in xrange(same):
+            for i in range(same):
                 #中文词组长度
-                c_len = struct.unpack('H',data[pos]+data[pos+1])[0]
+                c_len = struct.unpack('H',data[pos:pos+2])[0]
                 #中文词组
                 pos += 2
                 word = self.byte2str(data[pos: pos + c_len])
                 #扩展数据长度
                 pos += c_len
-                ext_len = struct.unpack('H',data[pos]+data[pos+1])[0]
+                ext_len = struct.unpack('H',data[pos:pos+2])[0]
                 #词频
                 pos += 2
-                count  = struct.unpack('H',data[pos]+data[pos+1])[0]
+                count  = struct.unpack('H',data[pos:pos+2])[0]
                 #保存
                 self.GTable.append((count,py,word))
                 #到下个词的偏移位置
@@ -139,11 +140,11 @@ class Scel2Txt(object):
 
     def deal(self, file_name):
         self.GTable = []
-        print '-'*60
+        print('-'*60)
         with open(file_name,'rb') as fin:
             data = fin.read()
-        if data[0:12] !="\x40\x15\x00\x00\x44\x43\x53\x01\x01\x00\x00\x00":
-            print "确认你选择的是搜狗(.scel)词库?"
+        if data[0:12] != b"\x40\x15\x00\x00\x44\x43\x53\x01\x01\x00\x00\x00":
+            print("确认你选择的是搜狗(.scel)词库?")
             sys.exit(0)
 
         #pdb.set_trace()
@@ -164,6 +165,6 @@ if __name__ == '__main__':
     for _file in _file_path_:
         scel2txt.deal(_file)
         #保存结果
-        result = map(lambda x: unicode(x[2]+"\t"+x[1]+"\t"+str(x[0])).encode("utf8"), scel2txt.GTable)
+        result = map(lambda x: str(x[2])+u"\t"+str(x[1])+u"\t"+str(x[0]), scel2txt.GTable)
         with open(_file.replace(".scel", ".txt"), "w") as fout:
             fout.write("\n".join(result))
