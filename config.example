@@ -1,0 +1,14 @@
+#!/bin/bash
+DICT_IDS=(
+  "15117"
+  "20656"
+)
+DICT_NAMES=(
+  "计算机词汇大全【官方推荐】"
+  "日剧、动漫大全【官方推荐】"
+)
+DICT_SHORTS=(
+  "computer"
+  "anime"
+)
+DICT_PREFIX="double_pinyin_flypy"
