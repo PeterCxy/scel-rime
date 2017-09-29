@@ -117,16 +117,25 @@ class Scel2Txt(object):
             py_table_len = struct.unpack('H',data[pos:pos+2])[0]
             #拼音索引表
             pos += 2
-            py = self.getWordPy(data[pos: pos+py_table_len])
+            try:
+                py = self.getWordPy(data[pos: pos+py_table_len])
+            except KeyError:
+                continue
 
             #中文词组
             pos += py_table_len
             for i in range(same):
                 #中文词组长度
-                c_len = struct.unpack('H',data[pos:pos+2])[0]
+                try:
+                    c_len = struct.unpack('H',data[pos:pos+2])[0]
+                except struct.error:
+                    continue
                 #中文词组
                 pos += 2
-                word = self.byte2str(data[pos: pos + c_len])
+                try:
+                    word = self.byte2str(data[pos: pos + c_len])
+                except struct.error:
+                    continue
                 #扩展数据长度
                 pos += c_len
                 ext_len = struct.unpack('H',data[pos:pos+2])[0]
