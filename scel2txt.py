@@ -158,9 +158,7 @@ class Scel2Txt(object):
 
 
 if __name__ == '__main__':
-
-    #将要转换的词库添加在这里就可以了
-    _file_path_ = [u"test.scel"]
+    _file_path_ = sys.argv[1:len(sys.argv)]
     scel2txt = Scel2Txt()
     for _file in _file_path_:
         scel2txt.deal(_file)
