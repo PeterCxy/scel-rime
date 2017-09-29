@@ -8,7 +8,7 @@ mkdir -p out/scel
 mkdir -p out/rime
 
 date=$(date +%Y.%m.%d)
-master_header="---\nname: ${DICT_PREFIX}.${DICT_MASTER_NAME}\nversion: \"${date}\"\nsort: by_weight\nuse_preset_vocabulary: true\nimport_tables:\n  - luna_pinyin_custom\n"
+master_header="---\nname: ${DICT_PREFIX}.${DICT_MASTER_NAME}\nversion: \"${date}\"\nsort: by_weight\nuse_preset_vocabulary: true\nimport_tables:\n  - luna_pinyin\n"
 
 # Loop over all the dictionaries
 i=0
